@@ -10,19 +10,21 @@
 angular.module('fcApp')
   .factory('Card', () => {
     var service = {};
-    var people = { 0: 'A', 10: 'J', 11: 'Q', 12: 'K' };
-    var readableTypes = {
+    const suites = { 0: 'A', 10: 'J', 11: 'Q', 12: 'K' };
+    const readableTypes = {
       H: 'heart',
       S: 'spade',
       F: 'flower',
       D: 'diamond'
     };
 
-    service.isSuit = (value) => Boolean(people[value]);
+    service.byType = (card) => card.type;
+    
+    service.isSuit = (value) => Boolean(suites[value]);
 
     service.toClass = (type) => readableTypes[type];
 
-    service.toHuman = (value) => people[value] || value + 1;
+    service.toHuman = (value) => suites[value] || value + 1;
 
     return service;
   });

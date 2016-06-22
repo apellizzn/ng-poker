@@ -18,8 +18,8 @@ angular.module('fcApp')
       +'<h4 class="card-count left">{{cards.length}}</h4>'
       + '</div>',
       restrict: 'E',
-      link: function postLink(scope, element, attrs) {
-        scope.$watchCollection(Game.getCards, function (newVal, oldVal) {
+      link: function postLink(scope) {
+        scope.$watchCollection(Game.getCards, function (newVal) {
           scope.cards = newVal;
         });
       }

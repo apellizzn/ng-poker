@@ -8,7 +8,7 @@
  * Service in the fcApp.
  */
 angular.module('fcApp')
-  .factory('Game', ($q, lodash, Players, Turn) => {
+  .factory('Game', ($q, lodash, Players, Turn, Hand) => {
     const numbers = lodash.range(0, 13);
     let service = {
       revealed: [],
@@ -45,7 +45,10 @@ angular.module('fcApp')
       }
     };
 
-    service.computeWinner = () => {};
+    service.computeWinner = () => {
+      hands = Players.getPlayers().map(Hand.bestHandFor(service.revealed));
+
+    };
 
     service.placeBets = () => {
       Turn.placeBets();

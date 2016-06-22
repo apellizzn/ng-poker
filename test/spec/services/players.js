@@ -43,7 +43,7 @@ describe('Service: Players', function () {
       bet1.raise = 2;
       let bet2 = player2;
       bet2.raise = 3;
-      Players.bet(bet1, bet2);
+      Players.bet([bet1, bet2]);
       expect(Players.find(1).fiches).toEqual(76);
       expect(Players.find(2).fiches).toEqual(14);
     });
@@ -57,8 +57,8 @@ describe('Service: Players', function () {
         { value: 1, type: 'H' }, { value: 2, type: 'F' },
         { value: 3, type: 'Q' }, { value: 4, type: 'D' }
       ]);
-      expect(Players.find(1).cards).toEqual([{ value: 1, type: 'H' }, { value: 2, type: 'F' }]);
-      expect(Players.find(2).cards).toEqual([{ value: 3, type: 'Q' }, { value: 4, type: 'D' }]);
+      expect(Players.find(1).cards).toEqual([{ value: 4, type: 'D' }, { value: 3, type: 'Q' }]);
+      expect(Players.find(2).cards).toEqual([{ value: 2, type: 'F' }, { value: 1, type: 'H' }]);
     });
   });
 

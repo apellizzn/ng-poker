@@ -12,6 +12,8 @@ angular.module('fcApp')
     var service = {};
     service.players = [];
 
+    service.getPlayersCount = () => service.players.length;
+
     service.addPlayer = (newPlayer) => {
       service.players.push(newPlayer);
       return newPlayer;
@@ -23,17 +25,20 @@ angular.module('fcApp')
       });
     };
 
-    service.bet = (aP1, aP2) => {
-      var p1 = lodash.find(service.players, (p) => p.identifier === aP1.identifier);
-      var p2 = lodash.find(service.players, (p) => p.identifier === aP2.identifier);
-      p1.fiches -= aP1.raise;
-      p2.fiches -= aP2.raise;
-      service.players = [p1, p2];
+    service.bet = (bets) => {
+      service.players = service.players.map((player) => {
+        const playerBet = lodash.find(bets, { identifier: player.identifier });
+        if (playerBet) {
+          player.fiches -= playerBet.raise;
+        }
+        return player;
+      });
     };
 
     service.giveCards = (newCards) => {
-      service.players[0].cards = lodash.take(newCards, 2);
-      service.players[1].cards = lodash.takeRight(newCards, 2);
+      lodash.forEach(service.players, (player) => {
+        player.cards = [newCards.pop(), newCards.pop()];
+      });
     };
 
     return service;

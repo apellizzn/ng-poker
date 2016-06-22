@@ -7,7 +7,7 @@
  * # player
  */
 angular.module('fcApp')
-  .directive('player', function (lodash, Game) {
+  .directive('player', (lodash, Game) => {
     return {
       template:
           '<span class={{side}}>'
@@ -30,7 +30,7 @@ angular.module('fcApp')
       restrict: 'E',
       link: function postLink(scope, element, attrs) {
         scope.raise = 0;
-        scope.bet = function () {
+        scope.bet = () => {
           Game.addBet(lodash.merge(scope.player, { raise: scope.raise }));
         };
         Game.addPlayer({

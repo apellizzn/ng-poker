@@ -50,8 +50,8 @@ describe('Service: Game', function () {
     it('calls the right methods', function () {
       spyOn(Players, 'bet');
       spyOn(Game, 'revealCards');
-      Game.bet(player, player);
-      expect(Players.bet).toHaveBeenCalledWith(player, player);
+      Game.bet([player, player]);
+      expect(Players.bet).toHaveBeenCalledWith([player, player]);
       expect(Game.revealCards).toHaveBeenCalledWith(1);
     });
   });

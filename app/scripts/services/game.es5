@@ -1,0 +1,86 @@
+'use strict';
+
+/**
+ * @ngdoc service
+ * @name fcApp.Game
+ * @description
+ * # Game
+ * Service in the fcApp.
+ */
+
+angular.module('fcApp').factory('Game', function ($q, lodash, Players) {
+  var numbers = lodash.range(0, 13);
+  var service = {
+    revealed: [],
+    cards: [],
+    stateMachine: {
+      start: 'setup',
+      setup: 'bet',
+      bet: 'turn',
+      turn: ['bet', 'end'],
+      end: 'start'
+    },
+    turnBet: []
+  };
+
+  service.reset = function () {
+    service.state = 'setup';
+    service.cards = lodash.union(lodash.map(numbers, function (n) {
+      return { value: n, type: 'S' };
+    }), lodash.map(numbers, function (n) {
+      return { value: n, type: 'D' };
+    }), lodash.map(numbers, function (n) {
+      return { value: n, type: 'F' };
+    }), lodash.map(numbers, function (n) {
+      return { value: n, type: 'H' };
+    }));
+  };
+
+  service.addPlayer = function (ps) {
+    return Players.addPlayer(ps);
+  };
+
+  service.findPlayer = function (id) {
+    return Players.find(id);
+  };
+
+  service.getCards = function () {
+    return service.cards;
+  };
+
+  service.getRevealedCards = function () {
+    return service.revealed;
+  };
+
+  service.addBet = function (p) {
+    service.turnBet.push(p);
+    if (service.turnBet.length > 1) {
+      service.bet(service.turnBet[0], service.turnBet[1]);
+      service.turnBet = [];
+    }
+  };
+
+  service.bet = function (p1, p2) {
+    Players.bet(p1, p2);
+    service.revealCards(1);
+  };
+
+  service.giveCards = function () {
+    if (service.cards.length < 4) {
+      return;
+    }
+    service.cards = lodash.shuffle(service.cards);
+    Players.giveCards(lodash.pullAt(service.cards, [0, 1, 2, 3]));
+    service.revealCards(3);
+    service.state = 'bet';
+  };
+
+  service.revealCards = function (n) {
+    service.cards = lodash.shuffle(service.cards);
+    var newCards = lodash.pullAt(service.cards, lodash.range(n));
+    service.revealed = lodash.union(service.revealed, newCards);
+  };
+
+  return service;
+});
+//# sourceMappingURL=game.es5.map

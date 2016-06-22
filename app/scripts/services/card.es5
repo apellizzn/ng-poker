@@ -1,0 +1,35 @@
+'use strict';
+
+/**
+ * @ngdoc service
+ * @name fcApp.Card
+ * @description
+ * # Card
+ * Service in the fcApp.
+ */
+
+angular.module('fcApp').factory('Card', function () {
+  var service = {};
+  var people = { 0: 'A', 10: 'J', 11: 'Q', 12: 'K' };
+  var readableTypes = {
+    H: 'heart',
+    S: 'spade',
+    F: 'flower',
+    D: 'diamond'
+  };
+
+  service.isSuit = function (value) {
+    return Boolean(people[value]);
+  };
+
+  service.toClass = function (type) {
+    return readableTypes[type];
+  };
+
+  service.toHuman = function (value) {
+    return people[value] || value + 1;
+  };
+
+  return service;
+});
+//# sourceMappingURL=card.es5.map

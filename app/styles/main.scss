@@ -1,0 +1,265 @@
+$icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/bootstrap/";
+// bower:scss
+@import "bootstrap-sass-official/assets/stylesheets/_bootstrap.scss";
+// endbower
+
+.browsehappy {
+  margin: 0.2em 0;
+  background: #ccc;
+  color: #000;
+  padding: 0.2em 0;
+}
+
+body {
+  padding: 0;
+  background-color: green;
+}
+
+/* Everything but the jumbotron gets side spacing for mobile first views */
+.header,
+.marketing,
+.footer {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+/* Custom page header */
+.header {
+  border-bottom: 1px solid #e5e5e5;
+  margin-bottom: 10px;
+
+  /* Make the masthead heading the same height as the navigation */
+  h3 {
+    margin-top: 0;
+    margin-bottom: 0;
+    line-height: 40px;
+    padding-bottom: 19px;
+  }
+}
+
+/* Custom page footer */
+.footer {
+  padding-top: 19px;
+  color: #777;
+  border-top: 1px solid #e5e5e5;
+}
+
+.container-narrow > hr {
+  margin: 30px 0;
+}
+
+/* Main marketing message and sign up button */
+.jumbotron {
+  text-align: center;
+  border-bottom: 1px solid #e5e5e5;
+
+  .btn {
+    font-size: 21px;
+    padding: 14px 24px;
+  }
+}
+
+/* Supporting marketing content */
+.marketing {
+  margin: 40px 0;
+
+  p + h4 {
+    margin-top: 28px;
+  }
+}
+
+/* Responsive: Portrait tablets and up */
+@media screen and (min-width: 768px) {
+  .container {
+    max-width: 1000px;
+  }
+
+  /* Remove the padding we set earlier */
+  .header,
+  .marketing,
+  .footer {
+    padding-left: 0;
+    padding-right: 0;
+  }
+  /* Space out the masthead */
+  .header {
+    margin-bottom: 30px;
+  }
+  /* Remove the bottom border on the jumbotron for visual effect */
+  .jumbotron {
+    border-bottom: 0;
+  }
+}
+.middle-height {
+  margin-top: 50%;
+  font-size: 45px;
+}
+
+.cards {
+  text-align: center;
+  max-width: 640px;
+  margin: 0 auto;
+}
+.card {
+  position: relative;
+  display: inline-block;
+  width: 172px;
+  height: 240px;
+  font: 16px 'Trebuchet MS';
+  margin: 10px;
+  border: 1px solid #c0c0c0;
+  border-radius: 4px;
+  background: #fff;
+}
+.card:before,
+.card:after {
+  content: attr(value);
+  position: absolute;
+  width: 12px;
+  text-align: center;
+  letter-spacing: -2px;
+}
+.card:before {
+  top: 4px;
+  left: 4px;
+}
+.card:after {
+  bottom: 4px;
+  right: 4px;
+  -webkit-transform: rotate(180deg);
+          transform: rotate(180deg);
+}
+.card--heart, .card--diamond {
+  color: #e44145;
+}
+.card--spade, .card--flower {
+  color: #252525;
+}
+.card--back {
+  background-color: brown;
+  color: white;
+  cursor: pointer;
+}
+.large {
+  float: left;
+  width: 100%;
+}
+.card-count {
+  margin-top: 100px;
+  margin-left: 100px;
+}
+.center {
+  text-align: center;
+}
+
+.card--heart:before,
+.card--heart:after {
+  content: attr(value) ' ♥';
+}
+.card--spade:before,
+.card--spade:after {
+  content: attr(value) ' ♠';
+}
+.card--flower:before,
+.card--flower:after {
+  content: attr(value) ' ♣';
+}
+.card--diamond:before,
+.card--diamond:after {
+  content: attr(value) ' ♦';
+}
+.card__inner {
+  box-sizing: border-box;
+  position: absolute;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  top: 24px;
+  left: 24px;
+  right: 24px;
+  bottom: 24px;
+}
+.card__inner--centered {
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+.card__column {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+.card__column--centered {
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+.card__symbol {
+  display: inline-block;
+  height: 40px;
+  text-align: center;
+}
+.card__symbol:before {
+  font-size: 64px;
+  line-height: 40px;
+}
+.card--heart .card__symbol:before {
+  content: '♥';
+}
+.card--spade .card__symbol:before {
+  content: '♠';
+}
+.card--flower .card__symbol:before {
+  content: '♣';
+}
+.card--diamond .card__symbol:before {
+  content: '♦';
+}
+.left {
+  float: left;
+}
+.right {
+  float: right;
+}
+
+.card__symbol--rotated,
+.card__symbol:last-of-type {
+  -webkit-transform: rotate(180deg);
+          transform: rotate(180deg);
+}
+.card__symbol:first-of-type {
+  -webkit-transform: rotate(0);
+          transform: rotate(0);
+}
+.card__symbol--big {
+  -webkit-flex-basis: 60px;
+      -ms-flex-preferred-size: 60px;
+          flex-basis: 60px;
+}
+.card__symbol--huge {
+  -webkit-flex-basis: 108px;
+      -ms-flex-preferred-size: 108px;
+          flex-basis: 108px;
+}
+.title {
+  font: 18px 'Trebuchet MS';
+  color: #444;
+  text-align: center;
+}

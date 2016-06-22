@@ -29,9 +29,9 @@ angular.module('fcApp')
       },
       restrict: 'E',
       link: function postLink(scope, element, attrs) {
-        scope.raise = 0;
+        scope.raise = 5;
         scope.bet = () => {
-          Game.addBet(lodash.merge(scope.player, { raise: scope.raise }));
+          Game.addBet(lodash.merge(scope.player, { raise: Number(scope.raise) }));
         };
         Game.addPlayer({
           name: scope.name,

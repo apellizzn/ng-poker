@@ -14,6 +14,14 @@ angular.module('fcApp')
 
     service.getPlayersCount = () => service.players.length;
 
+    service.getPlayers = () => service.players;
+
+    service.getCurrentPlayers = () => {
+      let tempPlayers = [];
+      angular.copy(service.players, tempPlayers);
+      return tempPlayers;
+    };
+    
     service.addPlayer = (newPlayer) => {
       service.players.push(newPlayer);
       return newPlayer;

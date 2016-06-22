@@ -8,26 +8,14 @@
  * Service in the fcApp.
  */
 angular.module('fcApp')
-  .factory('Game', ($q, lodash, Players) => {
+  .factory('Game', ($q, lodash, Players, Turn) => {
     const numbers = lodash.range(0, 13);
     let service = {
       revealed: [],
-      cards: [],
-      turnBet: {
-        expect: [],
-        amount: 0,
-        max: 0,
-        bets: []
-      }
+      cards: []
     };
 
-    service.nextTurn = () => {
-      service.turnBet = {
-        amount: 0,
-        max: 0,
-        bets: []
-      };
-    };
+    service.nextTurn = () => Turn.reset();
 
     service.reset = () => {
       service.cards = lodash.union(
@@ -50,26 +38,28 @@ angular.module('fcApp')
     service.getRevealedCards = () => service.revealed;
 
     service.addBet = (p) => {
-      service.turnBet.bets.push(p);
-      service.turnBet.amount += p.raise;
-      if (service.turnBet.bets.length == service.playersNum()) {
-        service.bet(service.turnBet.bets);
+      if(Turn.recordBet(p)) {
+        return Turn.validBets() ? service.placeBets() : false;
+      } else {
+        return false;
+      }
+    };
+
+    service.computeWinner = () => {};
+
+    service.placeBets = () => {
+      Turn.placeBets();
+      service.revealCards(1);
+      if(service.revealed.length == 5) {
+        service.computeWinner();
+      } else {
         service.nextTurn();
       }
     };
 
-    service.bet = (bets) => {
-      Players.bet(bets);
-      service.turnBet.amount = lodash.sumBy(bets, (b) => b.raise);
-      if(bets.every((b) => b.raise === bets[0].raise)) {
-        service.revealCards(1);
-      } else {
-        // raise
-      }
+    service.twoForEach = () => {
+      return lodash.pullAt(service.cards, lodash.range(service.playersNum() * 2));
     };
-
-    service.twoForEach = () =>
-      lodash.pullAt(service.cards, lodash.range(service.playersNum() * 2));
 
     service.giveCards = () => {
       if (service.cards.length < 4) { return; }

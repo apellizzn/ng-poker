@@ -21,7 +21,9 @@ angular.module('fcApp')
       angular.copy(service.players, tempPlayers);
       return tempPlayers;
     };
-    
+
+    service.equals = (p1) => (p2) => p1.identifier === p2.identifier;
+
     service.addPlayer = (newPlayer) => {
       service.players.push(newPlayer);
       return newPlayer;

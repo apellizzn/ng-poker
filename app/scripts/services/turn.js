@@ -16,6 +16,8 @@ angular.module('fcApp')
       bets: []
     };
 
+    const RAISE = (bet) => bet.raise;
+
     service.get = () => service;
 
     service.reset = () => {
@@ -25,14 +27,15 @@ angular.module('fcApp')
       service.missingPlayers = Players.getCurrentPlayers();
     };
 
-    service.validBets = () =>
-      service.bets.every((b) => b.raise === service.bets[0].raise)
-      && service.missingPlayers.length === 0;
+    service.hasTheSameBet = (bet) => bet.raise === service.bets[0].raise;
 
+    service.validBets = () =>
+      service.bets.every(service.hasTheSameBet)
+      && lodash.isEmpty(service.missingPlayers);
 
     service.placeBets = () => {
       Players.bet(service.bets);
-      service.totalBet = lodash.sumBy(service.bets, (b) => b.raise);
+      service.totalBet = lodash.sumBy(service.bets, RAISE);
     };
 
     service.allowedToBet = (player) => {
@@ -40,12 +43,9 @@ angular.module('fcApp')
       && Boolean(lodash.find(service.missingPlayers, { identifier: player.identifier }));
     };
 
-    service.acceptBet = (player) => {
+    service.recordBet = (player) => {
       if(service.allowedToBet(player)) {
-        lodash.remove(
-          service.missingPlayers,
-          (p) => p.identifier === player.identifier
-        );
+        lodash.remove(service.missingPlayers, Players.equals(player));
         service.bets.push(player);
         service.totalBet += player.raise;
         return true;

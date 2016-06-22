@@ -32,7 +32,7 @@ describe('Service: Game', function () {
 
   describe('addPlayer', () => {
     it('adds a new player', () => {
-      spyOn(Players, 'addPlayer')
+      spyOn(Players, 'addPlayer');
       Game.addPlayer(player);
       expect(Players.addPlayer).toHaveBeenCalledWith(player);
     });
@@ -40,7 +40,7 @@ describe('Service: Game', function () {
 
   describe('findPlayer', () => {
     it('finds the player', () => {
-      spyOn(Players, 'find')
+      spyOn(Players, 'find');
       Game.findPlayer(1);
       expect(Players.find).toHaveBeenCalledWith(1);
     });
@@ -57,13 +57,13 @@ describe('Service: Game', function () {
   });
 
   describe('giveCards', function () {
-      it('calls the right methods', function () {
-        Game.reset()
-        spyOn(Players, 'giveCards');
-        spyOn(Game, 'revealCards');
-        Game.giveCards();
-        expect(Players.giveCards).toHaveBeenCalled();
-        expect(Game.revealCards).toHaveBeenCalledWith(3);
-      });
+    it('calls the right methods', function () {
+      Game.reset();
+      spyOn(Players, 'giveCards');
+      spyOn(Game, 'revealCards');
+      Game.giveCards();
+      expect(Players.giveCards).toHaveBeenCalled();
+      expect(Game.revealCards).toHaveBeenCalledWith(3);
+    });
   });
 });

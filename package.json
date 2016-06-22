@@ -23,8 +23,6 @@
     "grunt-contrib-imagemin": "^1.0.0",
     "grunt-contrib-uglify": "^0.7.0",
     "grunt-contrib-watch": "^0.6.1",
-    "grunt-es6-module-transpiler": "^0.6.0",
-    "grunt-es6-transpiler": "^1.0.2",
     "grunt-filerev": "^2.1.2",
     "grunt-google-cdn": "^0.4.3",
     "grunt-jscs": "^1.8.0",
@@ -48,6 +46,8 @@
     "node": ">=0.10.0"
   },
   "scripts": {
+    "eslint": "eslint",
+    "lint": "eslint. ",
     "test": "karma start test/karma.conf.js"
   }
 }

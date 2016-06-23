@@ -11,37 +11,33 @@ angular.module('fcApp')
   .factory('Hand', (lodash, Card) => {
     let service = {};
 
+    const nOfAKind = (n) => (cards) =>
+      Boolean(lodash.find(
+        lodash.groupBy(cards, Card.byValue),
+        (value) => value.length === n
+      ));
+
+    const byTypeOrTrue = (type) =>
+      type ? (card) => card.type === type : () => true;
+
     const straight = (cards, type) => {
-      var start = true;
-      var count = 0;
-      const filtered = lodash.filter(
-        cards,
-        (c) => type ? c.type === type : true
+      const filtered = lodash.uniq(
+        lodash.filter(cards, byTypeOrTrue(type)),
+        Card.byValue
       );
-      for (var i = 0; i < filtered.length; i++) {
-        if(start){
-          count = 1;
-          start = false;
-        }
-        else if (filtered[i].value === filtered[i - 1].value) { continue; }
-        else if (filtered[i].value === filtered[i - 1].value - 1) {
-          count ++;
-        }
-        else {
-          count = 0;
-          start = true;
-        }
-      }
-      return count >= 5;
+      return lodash.some(
+        lodash.chunk(
+          lodash.compact(lodash.at(filtered, [0,4,1,5,2,6])),
+          2
+        ),
+        (pair) => pair[0].value - 4 === pair[1].value
+      );
     };
 
     const royal = (cards, type) => {
       return lodash.startsWith(
         lodash.reduce(
-          lodash.filter(
-            cards,
-            (c) => type ? c.type === type : true
-          ),
+          lodash.filter(cards, byTypeOrTrue(type)),
           (s, card) => s += Card.toHuman(card.value),
           ''
         ),
@@ -51,22 +47,14 @@ angular.module('fcApp')
 
     service.straight = (cards) => straight(cards);
 
-    service.fourOfAKind = (cards) => {
-      return Boolean(lodash.find(
-          lodash.groupBy(cards, Card.byValue),
-          (value) => value.length === 4
-      ));
-    };
+    service.fourOfAKind = nOfAKind(4);
+
+    service.threeOfAKind = nOfAKind(3);
+
+    service.onePair = nOfAKind(2);
 
     service.fullHouse = (cards) =>
       service.threeOfAKind(cards) && service.onePair(cards);
-
-    service.threeOfAKind = (cards) => {
-      return Boolean(lodash.find(
-          lodash.groupBy(cards, Card.byValue),
-          (value) => value.length === 3
-      ));
-    };
 
     service.twoPairs = (cards) => {
       return lodash.filter(
@@ -74,14 +62,6 @@ angular.module('fcApp')
           (value) => value.length === 2
       ).length == 2;
     };
-
-    service.onePair = (cards) => {
-      return Boolean(lodash.find(
-          lodash.groupBy(cards, Card.byValue),
-          (value) => value.length === 2
-      ));
-    };
-
 
     service.straightFlush = (cards) => {
       const type = service.flush(cards);
@@ -109,7 +89,7 @@ angular.module('fcApp')
     service.bestHandFor = (table) => (player) => {
       const cards = lodash.sortBy(
         lodash.union(player.cards, table),
-        Card.byValue
+        Card.byDescValue
       );
 
       return service.royalFlush(cards)

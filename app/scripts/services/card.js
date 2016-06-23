@@ -20,6 +20,8 @@ angular.module('fcApp')
 
     service.byValue = (card) => card.value;
 
+    service.byDescValue = (card) => -card.value;
+
     service.byType = (card) => card.type;
 
     service.isSuit = (value) => Boolean(suites[value]);

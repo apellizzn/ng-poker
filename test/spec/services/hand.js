@@ -19,12 +19,19 @@ describe('Service: Hand', function () {
   const kingOfHarts = { value: 12, type: 'H' };
   const jackOfHarts = { value: 10, type: 'H' };
 
+  const aceOfDiamonds = { value: 13, type: 'D' };
+  const kingOfDiamonds = { value: 12, type: 'D' };
+
+  const aceOfFlowers = { value: 13, type: 'F' };
+  const queenOfFlowers = { value: 11, type: 'F' };
+
+
   beforeEach(inject(function (_Hand_) {
     Hand = _Hand_;
 
   }));
   describe('flush', () => {
-    it('it works', () => {
+    it('works', () => {
       const okCards = [aceOfSpades, aceOfHarts, kingOfSpades, queenOfSpades,
          jackOfSpades, tenOfSpades, kingOfHarts];
       expect(Hand.flush(okCards)).toEqual('S');
@@ -36,7 +43,7 @@ describe('Service: Hand', function () {
   });
 
   describe('straightFlush', () => {
-    it('it works', () => {
+    it('works', () => {
       const okCards = [aceOfHarts, kingOfHarts, queenOfSpades, jackOfSpades,
          tenOfSpades,  nineOfSpades, eigthOfSpades];
 
@@ -50,7 +57,7 @@ describe('Service: Hand', function () {
   });
 
   describe('royalFlush', () => {
-    it('it works', () => {
+    it('works', () => {
       const okCards = [aceOfSpades, kingOfSpades, kingOfHarts, queenOfSpades,
          jackOfSpades, jackOfHarts, tenOfSpades];
 
@@ -60,6 +67,102 @@ describe('Service: Hand', function () {
         jackOfSpades,  tenOfSpades, nineOfSpades];
 
       expect(Hand.royalFlush(badCards)).toBe(false);
+    });
+  });
+
+  describe('fourOfAKind', () => {
+    it('works', () => {
+      const okCards = [aceOfSpades, aceOfHarts, aceOfDiamonds, aceOfFlowers,
+         jackOfSpades, jackOfHarts, tenOfSpades];
+
+      expect(Hand.fourOfAKind(okCards)).toBe(true);
+
+      const badCards = [aceOfSpades, aceOfHarts, kingOfHarts, queenOfSpades,
+        jackOfSpades,  tenOfSpades, nineOfSpades];
+
+      expect(Hand.fourOfAKind(badCards)).toBe(false);
+
+    });
+  });
+
+  describe('fullHouse', () => {
+    it('works', () => {
+      const okCards = [aceOfSpades, aceOfHarts, kingOfSpades, kingOfDiamonds,
+         kingOfHarts, jackOfHarts, tenOfSpades];
+
+      expect(Hand.fullHouse(okCards)).toBe(true);
+
+      const badCards = [aceOfSpades, aceOfHarts, kingOfHarts, kingOfSpades,
+        jackOfSpades,  tenOfSpades, nineOfSpades];
+
+      expect(Hand.fullHouse(badCards)).toBe(false);
+    });
+  });
+
+  describe('straight', () => {
+    it('works', () => {
+      const okCards = [aceOfHarts, kingOfDiamonds, queenOfFlowers, jackOfSpades,
+         tenOfSpades,  nineOfSpades, eigthOfSpades];
+
+      expect(Hand.straight(okCards)).toBe(true);
+
+      const badCards = [aceOfHarts, kingOfSpades, kingOfHarts, queenOfSpades,
+        jackOfSpades,  eigthOfSpades, jackOfHarts];
+
+      expect(Hand.straight(badCards)).toBe(false);
+
+    });
+  });
+
+  describe('threeOfAKind', () => {
+    it('works', () => {
+      const okCards = [aceOfSpades, aceOfHarts, aceOfDiamonds, kingOfDiamonds,
+         jackOfSpades, jackOfHarts, tenOfSpades];
+
+      expect(Hand.threeOfAKind(okCards)).toBe(true);
+
+      const badCards = [aceOfSpades, aceOfHarts, kingOfHarts, queenOfSpades,
+        jackOfSpades,  tenOfSpades, nineOfSpades];
+
+      expect(Hand.threeOfAKind(badCards)).toBe(false);
+    });
+  });
+
+  describe('twoPairs', () => {
+    it('works', () => {
+      const okCards = [aceOfSpades, aceOfHarts, kingOfHarts, kingOfDiamonds,
+         jackOfSpades, tenOfSpades, nineOfSpades];
+
+      expect(Hand.twoPairs(okCards)).toBe(true);
+
+      const badCards = [aceOfSpades, kingOfHarts, kingOfDiamonds,
+        jackOfSpades,  tenOfSpades, nineOfSpades];
+
+      expect(Hand.twoPairs(badCards)).toBe(false);
+    });
+  });
+
+  describe('onePair', () => {
+    it('works', () => {
+      const okCards = [aceOfSpades, aceOfHarts, kingOfHarts, queenOfSpades,
+         jackOfSpades, tenOfSpades, nineOfSpades];
+
+      expect(Hand.onePair(okCards)).toBe(true);
+
+      const badCards = [aceOfSpades, kingOfHarts, queenOfSpades,
+        jackOfSpades,  tenOfSpades, nineOfSpades];
+
+      expect(Hand.onePair(badCards)).toBe(false);
+    });
+  });
+
+  describe('hightCard', () => {
+    it('works', () => {
+      const cards = [aceOfHarts, kingOfDiamonds, queenOfFlowers, jackOfSpades,
+         tenOfSpades,  nineOfSpades, eigthOfSpades];
+
+      expect(Hand.hightCard(cards)).toEqual([aceOfHarts, kingOfDiamonds,
+        queenOfFlowers, jackOfSpades, tenOfSpades]);
     });
   });
 });

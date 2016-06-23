@@ -49,6 +49,40 @@ angular.module('fcApp')
       );
     };
 
+    service.straight = (cards) => straight(cards);
+
+    service.fourOfAKind = (cards) => {
+      return Boolean(lodash.find(
+          lodash.groupBy(cards, Card.byValue),
+          (value) => value.length === 4
+      ));
+    };
+
+    service.fullHouse = (cards) =>
+      service.threeOfAKind(cards) && service.onePair(cards);
+
+    service.threeOfAKind = (cards) => {
+      return Boolean(lodash.find(
+          lodash.groupBy(cards, Card.byValue),
+          (value) => value.length === 3
+      ));
+    };
+
+    service.twoPairs = (cards) => {
+      return lodash.filter(
+          lodash.groupBy(cards, Card.byValue),
+          (value) => value.length === 2
+      ).length == 2;
+    };
+
+    service.onePair = (cards) => {
+      return Boolean(lodash.find(
+          lodash.groupBy(cards, Card.byValue),
+          (value) => value.length === 2
+      ));
+    };
+
+
     service.straightFlush = (cards) => {
       const type = service.flush(cards);
       return Boolean(type) && straight(cards, type);
@@ -68,6 +102,10 @@ angular.module('fcApp')
 
     };
 
+    service.hightCard = (cards) => {
+      return lodash.take(cards, 5);
+    };
+
     service.bestHandFor = (table) => (player) => {
       const cards = lodash.sortBy(
         lodash.union(player.cards, table),
@@ -76,13 +114,14 @@ angular.module('fcApp')
 
       return service.royalFlush(cards)
            || service.straightFlush(cards)
-      //   || fourOfAKind(cards)
-      //   || fullHouse(cards)
-           || service.flush(cards);
-      //   || threeOfAKind(cards)
-      //   || TwoPairs(cards)
-      //   || onePair(cards)
-      //   || hightCard(cards)
+           || service.fourOfAKind(cards)
+           || service.fullHouse(cards)
+           || service.flush(cards)
+           || service.straight(cards)
+           || service.threeOfAKind(cards)
+           || service.twoPairs(cards)
+           || service.onePair(cards)
+           || service.hightCard(cards);
     };
 
     return service;

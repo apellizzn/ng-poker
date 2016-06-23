@@ -8,19 +8,21 @@ describe('Service: Game', function () {
   // instantiate service
   let Game;
   let Players;
+  let Turn;
   const player = {
     id: 1,
     name: 'foo',
     fiches: '70'
   };
 
-  beforeEach(inject( function(_Game_, _Players_) {
+  beforeEach(inject( function(_Game_, _Players_, _Turn_) {
     Game = _Game_;
     Players = _Players_;
+    Turn = _Turn_;
   }));
 
   describe('reset', () => {
-    it('rests the game', () => {
+    it('resets the game', () => {
       Game.reset();
       expect(Game.cards.length).toEqual(52);
       expect(Game.cards.filter((c) => c.type === 'S').length).toEqual(13);
@@ -46,12 +48,12 @@ describe('Service: Game', function () {
     });
   });
 
-  describe('bet', function () {
+  describe('placeBets', function () {
     it('calls the right methods', function () {
-      spyOn(Players, 'bet');
+      spyOn(Turn, 'placeBets');
       spyOn(Game, 'revealCards');
-      Game.bet([player, player]);
-      expect(Players.bet).toHaveBeenCalledWith([player, player]);
+      Game.placeBets();
+      expect(Turn.placeBets).toHaveBeenCalled();
       expect(Game.revealCards).toHaveBeenCalledWith(1);
     });
   });

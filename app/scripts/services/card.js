@@ -10,7 +10,7 @@
 angular.module('fcApp')
   .factory('Card', () => {
     var service = {};
-    const suites = { 0: 'A', 10: 'J', 11: 'Q', 12: 'K' };
+    const suites = { 13: 'A', 10: 'J', 11: 'Q', 12: 'K' };
     const readableTypes = {
       H: 'heart',
       S: 'spade',
@@ -18,8 +18,10 @@ angular.module('fcApp')
       D: 'diamond'
     };
 
+    service.byValue = (card) => card.value;
+
     service.byType = (card) => card.type;
-    
+
     service.isSuit = (value) => Boolean(suites[value]);
 
     service.toClass = (type) => readableTypes[type];

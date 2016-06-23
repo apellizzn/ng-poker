@@ -165,4 +165,15 @@ describe('Service: Hand', function () {
         queenOfFlowers, jackOfSpades, tenOfSpades]);
     });
   });
+
+  describe('bestHandFor', () => {
+    it('works', () => {
+      const cards = [aceOfHarts, kingOfHarts, queenOfSpades, jackOfSpades,
+        tenOfSpades];
+      const player = {
+        cards: [eigthOfSpades, nineOfSpades]
+      };
+      // expect(Hand.bestHandFor(cards)(player)).toEqual({});
+    });
+  });
 });

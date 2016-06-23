@@ -79,7 +79,6 @@ angular.module('fcApp')
           (value) => value.length >= 5
         );
       return x && x[0].type;
-
     };
 
     service.hightCard = (cards) => {
@@ -92,16 +91,18 @@ angular.module('fcApp')
         Card.byDescValue
       );
 
-      return service.royalFlush(cards)
-           || service.straightFlush(cards)
-           || service.fourOfAKind(cards)
-           || service.fullHouse(cards)
-           || service.flush(cards)
-           || service.straight(cards)
-           || service.threeOfAKind(cards)
-           || service.twoPairs(cards)
-           || service.onePair(cards)
-           || service.hightCard(cards);
+      return {
+        royalFlush: service.royalFlush(cards),
+        straightFlush: service.straightFlush(cards),
+        fourOfAKind: service.fourOfAKind(cards),
+        fullHouse: service.fullHouse(cards),
+        flush: service.flush(cards),
+        straight: service.straight(cards),
+        threeOfAKind: service.threeOfAKind(cards),
+        twoPairs: service.twoPairs(cards),
+        onePair: service.onePair(cards),
+        hightCard: service.hightCard(cards)
+      };
     };
 
     return service;

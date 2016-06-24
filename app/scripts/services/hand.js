@@ -11,11 +11,18 @@ angular.module('fcApp')
   .factory('Hand', (lodash, Card) => {
     let service = {};
 
-    const nOfAKind = (n) => (cards) =>
-      Boolean(lodash.find(
+    const NOT_FOUND = { found: false, points: 0 };
+
+    const nOfAKind = (n) => (cards) => {
+      const found = lodash.find(
         lodash.groupBy(cards, Card.byValue),
         (value) => value.length === n
-      ));
+      );
+      return {
+        found: Boolean(found),
+        points: lodash.sumBy(found, Card.byValue)
+      };
+    };
 
     const byTypeOrTrue = (type) =>
       type ? (card) => card.type === type : () => true;
@@ -25,13 +32,18 @@ angular.module('fcApp')
         lodash.filter(cards, byTypeOrTrue(type)),
         Card.byValue
       );
-      return lodash.some(
-        lodash.chunk(
-          lodash.compact(lodash.at(filtered, [0,4,1,5,2,6])),
-          2
-        ),
-        (pair) => pair[0].value - 4 === pair[1].value
-      );
+      let result = [];
+      for (var i = 0; i < filtered.length - 1; i++) {
+        if(filtered[i].value === filtered[i + 1].value + 1){
+          result.push(filtered[i]);
+        } else {
+          result = [];
+        }
+      }
+      return {
+        found: result.length > 0,
+        points: lodash.sumBy(result, Card.byValue)
+      };
     };
 
     const royal = (cards, type) => {
@@ -53,41 +65,68 @@ angular.module('fcApp')
 
     service.onePair = nOfAKind(2);
 
-    service.fullHouse = (cards) =>
-      service.threeOfAKind(cards) && service.onePair(cards);
+    service.fullHouse = (cards) => {
+      const threeOfAKind = service.threeOfAKind(cards);
+      const onePair = service.onePair(cards);
+      const found = threeOfAKind.found && onePair.found;
+      return found ? { found: true, points: threeOfAKind.points + onePair.points }
+        : NOT_FOUND;
+    };
 
     service.twoPairs = (cards) => {
-      return lodash.filter(
+      let filtered = lodash.filter(
           lodash.groupBy(cards, Card.byValue),
           (value) => value.length === 2
-      ).length == 2;
+      );
+      filtered = lodash.reduce(filtered, (css, cs) => lodash.concat(css, cs));
+      if(filtered.length === 4) {
+        return {
+          found: true,
+          points: lodash.sumBy(filtered, Card.byValue)
+        };
+      } else {
+        return NOT_FOUND;
+      }
     };
 
     service.straightFlush = (cards) => {
-      const type = service.flush(cards);
-      return Boolean(type) && straight(cards, type);
+      const flush = service.flush(cards);
+      return flush.found ? straight(cards, flush.type) : NOT_FOUND;
     };
 
     service.royalFlush = (cards) => {
-      const type = service.flush(cards);
-      return Boolean(type) && straight(cards, type) && royal(cards, type);
+      const flush = service.flush(cards);
+      if (Boolean(flush.found)
+        && straight(cards, flush.type).found
+        && royal(cards, flush.type)) {
+        return { found: true, points: 100 };
+      } else {
+        return NOT_FOUND;
+      }
     };
 
     service.flush = (cards) => {
-      let x = lodash.find(
+      const found = lodash.find(
           lodash.groupBy(cards, Card.byType),
           (value) => value.length >= 5
         );
-      return x && x[0].type;
+      return {
+        found: Boolean(found),
+        points: found ? lodash.sumBy(found, Card.byValue) : 0,
+        type: found ? found[0].type : null
+      };
     };
 
     service.hightCard = (cards) => {
-      return lodash.take(cards, 5);
+      return {
+        found: true,
+        points: lodash.sumBy(lodash.take(cards, 5), Card.byValue)
+      };
     };
 
-    service.bestHandFor = (table) => (player) => {
+    service.bestHandFor = (table, playerCards) => {
       const cards = lodash.sortBy(
-        lodash.union(player.cards, table),
+        lodash.union(playerCards, table),
         Card.byDescValue
       );
 

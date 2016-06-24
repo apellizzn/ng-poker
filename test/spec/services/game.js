@@ -9,16 +9,21 @@ describe('Service: Game', function () {
   let Game;
   let Players;
   let Turn;
+  let Hand;
+
+  const notFound = { found: false, points: 0 };
   const player = {
     id: 1,
+    cards: 1,
     name: 'foo',
     fiches: '70'
   };
 
-  beforeEach(inject( function(_Game_, _Players_, _Turn_) {
+  beforeEach(inject( function(_Game_, _Players_, _Turn_, _Hand_) {
     Game = _Game_;
     Players = _Players_;
     Turn = _Turn_;
+    Hand = _Hand_;
   }));
 
   describe('reset', () => {
@@ -66,6 +71,44 @@ describe('Service: Game', function () {
       Game.giveCards();
       expect(Players.giveCards).toHaveBeenCalled();
       expect(Game.revealCards).toHaveBeenCalledWith(3);
+    });
+  });
+
+  describe('computeWinner', function () {
+    const playerMocks = [
+      player,
+      {
+        identifier: 2,
+        cards: 2
+      }
+    ];
+    describe('when royalFlush against straightFlush', () => {
+      it('returns royalFlush', function () {
+        Game.reset();
+        spyOn(Players, 'getPlayers').and.returnValue(playerMocks);
+        spyOn(Hand, 'bestHandFor').and.callFake((c, p) => {
+          if(p === 1) {
+            return { royalFlush: { found: true, points: 100 } };
+          } else {
+            return { royalFlush: notFound, straightFlush: { found: true, points: 10 } };
+          }
+        });
+        expect(Game.computeWinner().identifier).toEqual(player.identifier);
+      });
+    });
+    describe('when straightFlush against straightFlush', () => {
+      it('returns bigger one', function () {
+        Game.reset();
+        spyOn(Players, 'getPlayers').and.returnValue(playerMocks);
+        spyOn(Hand, 'bestHandFor').and.callFake((c, p) => {
+          if(p === 1) {
+            return { royalFlush: notFound, straightFlush: { found: true, points: 20 }};
+          } else {
+            return { royalFlush: notFound, straightFlush: { found: true, points: 10 } };
+          }
+        });
+        expect(Game.computeWinner().identifier).toEqual(player.identifier);
+      });
     });
   });
 });

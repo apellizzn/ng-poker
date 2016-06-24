@@ -15,6 +15,9 @@ angular.module('fcApp')
       cards: []
     };
 
+    const options = ['royalFlush','straightFlush','fourOfAKind','fullHouse','flush',
+      'straight', 'threeOfAKind', 'twoPairs', 'onePair', 'hightCard']
+
     service.nextTurn = () => Turn.reset();
 
     service.reset = () => {
@@ -46,7 +49,21 @@ angular.module('fcApp')
     };
 
     service.computeWinner = () => {
-      hands = Players.getPlayers().map(Hand.bestHandFor(service.revealed));
+      const players = Players.getPlayers().map((player) => {
+        return {
+          player: player,
+          hand: Hand.bestHandFor(service.revealed, player.cards)
+        };
+      });
+      let winner;
+      lodash.find(options, (option) => {
+        const candidates = lodash.filter(players, (player) => player.hand[option].found);
+        if(candidates.length > 0) {
+          winner = lodash.maxBy(candidates, (c) => c.hand[option].points);
+          return true;
+        }
+      });
+      return winner;
     };
 
     service.placeBets = () => {

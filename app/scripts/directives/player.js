@@ -16,9 +16,9 @@ angular.module('fcApp')
           + '</div>'
           + '<div class="center">'
           + '<h4>{{player.name}} - {{player.fiches}}</h4>'
-          + '<input ng-model="raise"></input><button ng-click="bet()">Rise</button>'
+          + '<input ng-model="amount"></input><button ng-click="raise()">Rise</button>'
           + '<button>Check</button>'
-          + '<button>Fold</button>'
+          + '<button ng-click="fold()">Fold</button>'
           + '</div>'
           + '<span>',
       scope: {
@@ -28,17 +28,23 @@ angular.module('fcApp')
         identifier: '@'
       },
       restrict: 'E',
-      link: function postLink(scope, element, attrs) {
-        scope.raise = 5;
-        scope.bet = () => {
-          Game.addBet(lodash.merge(scope.player, { raise: Number(scope.raise) }));
-        };
+      link: function postLink(scope) {
         Game.addPlayer({
           name: scope.name,
-          fiches: scope.fiches,
-          identifier: scope.identifier
+          fiches: Number(scope.fiches),
+          identifier: Number(scope.identifier)
         });
-        scope.player = Game.findPlayer(scope.identifier);
+        scope.amount = 5;
+        scope.player = Game.findPlayer(Number(scope.identifier));
+
+        scope.raise = () => {
+          Game.addBet(lodash.merge(scope.player, { raise: Number(scope.amount) }));
+        };
+
+        scope.fold = () => {
+          Game.addBet(lodash.merge(scope.player, { fold: true }));
+        };
+
       }
     };
   });

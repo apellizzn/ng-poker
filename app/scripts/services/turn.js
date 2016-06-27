@@ -21,11 +21,21 @@ angular.module('fcApp')
     service.get = () => service;
 
     service.getTotalBet = () => service.totalBet;
-     
+
+    service.onlyOneBet = () => service.bets.length === 1;
+
+    service.clear = () => {
+      service.amount = 0;
+      service.bets = [];
+      service.maxBet = 0;
+      service.totalBet = 0;
+      service.missingPlayers = Players.getCurrentPlayers();
+    };
+
     service.reset = () => {
       service.amount = 0;
-      service.maxBet = 0;
       service.bets = [];
+      service.maxBet = 0;
       service.missingPlayers = Players.getCurrentPlayers();
     };
 
@@ -37,19 +47,20 @@ angular.module('fcApp')
 
     service.placeBets = () => {
       Players.bet(service.bets);
-      service.totalBet = lodash.sumBy(service.bets, RAISE);
     };
 
     service.allowedToBet = (player) => {
-      return player.raise >= service.maxBet
+      return (player.raise >= service.maxBet || player.fold)
       && Boolean(lodash.find(service.missingPlayers, { identifier: player.identifier }));
     };
 
     service.recordBet = (player) => {
       if(service.allowedToBet(player)) {
         lodash.remove(service.missingPlayers, Players.equals(player));
-        service.bets.push(player);
-        service.totalBet += player.raise;
+        if(!player.fold) {
+          service.bets.push(player);
+          service.totalBet += player.raise;
+        }
         return true;
       } else {
         return false;

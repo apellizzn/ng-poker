@@ -20,6 +20,8 @@ angular.module('fcApp')
 
     service.nextTurn = () => Turn.reset();
 
+    service.nextHand = () => Turn.clear();
+
     service.reloadDeck =  () => {
       service.cards = lodash.union(
         lodash.map(numbers, (n) => { return { value: n, type: 'S' }; }),
@@ -33,7 +35,7 @@ angular.module('fcApp')
     service.reset = () => {
       service.reloadDeck();
       service.giveCards();
-      service.nextTurn();
+      service.nextHand();
     };
 
     service.playersNum = () => Players.getPlayersCount();
@@ -75,9 +77,10 @@ angular.module('fcApp')
 
     service.placeBets = () => {
       Turn.placeBets();
-      if(service.revealed.length == 5) {
-        const winner = service.computeWinner();
-        Players.prize(winner.identifier, Turn.getTotalBet());
+      const alreadyAWinner = Turn.onlyOneBet();
+      if(service.revealed.length == 5 || alreadyAWinner) {
+        const winner = alreadyAWinner ? Turn.get().bets[0] : service.computeWinner();
+        Players.prize(Number(winner.identifier), Turn.getTotalBet());
         service.reset();
       } else {
         service.revealCards(1);

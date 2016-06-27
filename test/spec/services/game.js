@@ -86,14 +86,14 @@ describe('Service: Game', function () {
   });
 
   describe('reset', () => {
-    it('reloads the deck ,  give cards and calls the next turn', () => {
+    it('reloads the deck ,  give cards and calls the next hand', () => {
       spyOn(Game, 'reloadDeck');
       spyOn(Game, 'giveCards');
-      spyOn(Game, 'nextTurn');
+      spyOn(Game, 'nextHand');
       Game.reset();
       expect(Game.reloadDeck).toHaveBeenCalled();
       expect(Game.giveCards).toHaveBeenCalled();
-      expect(Game.nextTurn).toHaveBeenCalled();
+      expect(Game.nextHand).toHaveBeenCalled();
     });
   });
   describe('giveCards', function () {

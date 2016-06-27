@@ -16,6 +16,8 @@ angular.module('fcApp')
 
     service.getPlayers = () => service.players;
 
+    service.prize = (id, prize) => service.find(id).fiches += prize;
+
     service.getCurrentPlayers = () => {
       let tempPlayers = [];
       angular.copy(service.players, tempPlayers);

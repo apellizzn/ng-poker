@@ -49,6 +49,13 @@ describe('Service: Players', function () {
     });
   });
 
+  describe('equals', () => {
+    it('checks for identified', () => {
+      expect(Players.equals(player)(player2)).toBe(false);
+      expect(Players.equals(player)({ identifier: 1 })).toBe(true);
+    });
+  });
+
   describe('giveCards', function () {
     it('assigns 2 card to each player', function () {
       Players.addPlayer(player);

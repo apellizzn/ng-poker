@@ -16,17 +16,23 @@ angular.module('fcApp')
     };
 
     const options = ['royalFlush','straightFlush','fourOfAKind','fullHouse','flush',
-      'straight', 'threeOfAKind', 'twoPairs', 'onePair', 'hightCard']
+      'straight', 'threeOfAKind', 'twoPairs', 'onePair', 'hightCard'];
 
     service.nextTurn = () => Turn.reset();
 
-    service.reset = () => {
+    service.reloadDeck =  () => {
       service.cards = lodash.union(
         lodash.map(numbers, (n) => { return { value: n, type: 'S' }; }),
         lodash.map(numbers, (n) => { return { value: n, type: 'D' }; }),
         lodash.map(numbers, (n) => { return { value: n, type: 'F' }; }),
         lodash.map(numbers, (n) => { return { value: n, type: 'H' }; })
       );
+      service.revealed = [];
+    };
+
+    service.reset = () => {
+      service.reloadDeck();
+      service.giveCards();
       service.nextTurn();
     };
 
@@ -60,18 +66,21 @@ angular.module('fcApp')
         const candidates = lodash.filter(players, (player) => player.hand[option].found);
         if(candidates.length > 0) {
           winner = lodash.maxBy(candidates, (c) => c.hand[option].points);
+          console.log("The winner is ", winner.player, "by " + option," the hand is", winner.hand[option]);
           return true;
         }
       });
-      return winner;
+      return winner.player;
     };
 
     service.placeBets = () => {
       Turn.placeBets();
-      service.revealCards(1);
       if(service.revealed.length == 5) {
-        service.computeWinner();
+        const winner = service.computeWinner();
+        Players.prize(winner.identifier, Turn.getTotalBet());
+        service.reset();
       } else {
+        service.revealCards(1);
         service.nextTurn();
       }
     };

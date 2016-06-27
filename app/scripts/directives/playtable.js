@@ -21,17 +21,13 @@ angular.module('fcApp')
         + '<player identifier=2 side="right" fiches=100 name="Exhibitor"></player>'
       + '</div>',
       restrict: 'E',
-      link: function postLink(scope, element, attrs) {
+      link: function postLink(scope) {
         Game.reset();
-        Game.giveCards();
         scope.turn = Turn.get();
         scope.players = Players.getPlayers();
-        scope.$watchCollection(Game.getRevealedCards, function (newVal, oldVal) {
+        scope.$watchCollection(Game.getRevealedCards, function (newVal) {
           scope.revealed = newVal;
         });
-        // scope.turn = function () {
-        //   scope.revealed = lodash.concat([], scope.revealed, Game.revealCards(1));
-        // };
       }
     };
   });

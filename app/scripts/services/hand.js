@@ -28,21 +28,25 @@ angular.module('fcApp')
       type ? (card) => card.type === type : () => true;
 
     const straight = (cards, type) => {
-      const filtered = lodash.uniq(
+      const filtered = lodash.uniqBy(
         lodash.filter(cards, byTypeOrTrue(type)),
         Card.byValue
       );
       let result = [];
-      for (var i = 0; i < filtered.length - 1; i++) {
-        if(filtered[i].value === filtered[i + 1].value + 1){
+      for (var i = 0; i < filtered.length; i++) {
+        if(result.length === 5) { break; }
+        else if(i + 1 < filtered.length && filtered[i].value === filtered[i + 1].value + 1){
+          result.push(filtered[i]);
+        } else if( i > 0 && filtered[i].value === filtered[i - 1].value - 1){
           result.push(filtered[i]);
         } else {
           result = [];
         }
       }
+      const found = result.length >= 5;
       return {
-        found: result.length > 0,
-        points: lodash.sumBy(result, Card.byValue)
+        found: found,
+        points: found ? lodash.sumBy(result, Card.byValue) : 0
       };
     };
 
@@ -79,7 +83,7 @@ angular.module('fcApp')
           (value) => value.length === 2
       );
       filtered = lodash.reduce(filtered, (css, cs) => lodash.concat(css, cs));
-      if(filtered.length === 4) {
+      if(filtered && filtered.length === 4) {
         return {
           found: true,
           points: lodash.sumBy(filtered, Card.byValue)

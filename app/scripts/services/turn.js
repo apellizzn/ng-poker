@@ -20,6 +20,8 @@ angular.module('fcApp')
 
     service.get = () => service;
 
+    service.getTotalBet = () => service.totalBet;
+     
     service.reset = () => {
       service.amount = 0;
       service.maxBet = 0;

@@ -102,8 +102,8 @@ body {
 .card {
   position: relative;
   display: inline-block;
-  width: 50px;
-  height: 100px;
+  width: 120px;
+  height: 200px;
   font: 16px 'Trebuchet MS';
   margin: 10px;
   border: 1px solid #c0c0c0;
@@ -153,19 +153,19 @@ body {
 
 .card--heart:before,
 .card--heart:after {
-//content: attr(value) ' ♥';
+  content: attr(value) ' ♥';
 }
 .card--spade:before,
 .card--spade:after {
-  //content: attr(value) ' ♠';
+  content: attr(value) ' ♠';
 }
 .card--flower:before,
 .card--flower:after {
-  //content: attr(value) ' ♣';
+  content: attr(value) ' ♣';
 }
 .card--diamond:before,
 .card--diamond:after {
-  //content: attr(value) ' ♦';
+  content: attr(value) ' ♦';
 }
 .card__inner {
   box-sizing: border-box;
@@ -220,16 +220,16 @@ body {
   line-height: 40px;
 }
 .card--heart .card__symbol:before {
-  //content: '♥';
+  content: '♥';
 }
 .card--spade .card__symbol:before {
-  //content: '♠';
+  content: '♠';
 }
 .card--flower .card__symbol:before {
-  //content: '♣';
+  content: '♣';
 }
 .card--diamond .card__symbol:before {
-  //content: '♦';
+  content: '♦';
 }
 .left {
   float: left;

@@ -7,24 +7,28 @@
  * # PlayTable
  */
 angular.module('fcApp')
-  .directive('playtable', function (lodash, Game, Turn, Players) {
+  .directive('playtable', function (lodash, Game, Turn) {
     return {
-      template:
-      '<div>'
-        + '<deck></deck>'
-        + '<div>'
-        + '<p>Dish : {{turn.totalBet}}</p>'
-        + '<p>Players : {{players}}</p>'
-        + '<card value="card.value" type="card.type" ng-repeat="card in revealed"></card>'
-        + '</div>'
-        + '<player identifier=1 side="left" fiches=100 name="PromoArticle"></player>'
-        + '<player identifier=2 side="right" fiches=100 name="Exhibitor"></player>'
-      + '</div>',
+      templateUrl: 'views/playtable.html',
       restrict: 'E',
       link: function postLink(scope) {
+        scope.players = [
+          {
+            identifier: 1,
+            name: 'PromoArticle',
+            fiches: 100
+          },
+          {
+            identifier: 2,
+            name: 'Exhibitor',
+            fiches: 100
+          }
+        ];
+        scope.players.forEach(Game.addPlayer);
+
         Game.reset();
         scope.turn = Turn.get();
-        scope.players = Players.getPlayers();
+
         scope.$watchCollection(Game.getRevealedCards, function (newVal) {
           scope.revealed = newVal;
         });

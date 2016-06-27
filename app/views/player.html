@@ -1,0 +1,23 @@
+<div layout="column" layout-padding>
+  <h2>{{player.name}}</h2>
+  <div>
+    <card value="card.value" type="card.type" ng-repeat="card in player.cards"></card>
+  </div>
+  <md-content layout="row">
+    <md-slider-container flex>
+      <md-input-container>
+        <input flex type="number" ng-model="amount" aria-label="raise" aria-controls="amount-slider">
+      </md-input-container>
+      <md-slider ng-model="amount" min="0" max="{{player.fiches}}" aria-label="raise" id="volume-slider" class="md-accent" md-vertical md-range></md-slider>
+      </md-slider>
+      <h5>Raise</h5>
+    </md-slider-container>
+    <section layout="row" layout-sm="column" layout-align="center center" layout-wrap>
+      <md-button class="md-raised">Raise</md-button>
+      <md-button class="md-raised md-warn">Fold</md-button>
+      <md-button class="md-raised md-primary">Check</md-button>
+    </section>
+  </md-content>
+  <div>
+  </div>
+</div>

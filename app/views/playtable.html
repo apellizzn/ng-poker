@@ -1,0 +1,15 @@
+<div layout="column" class="md-whiteframe-24dp">
+  <deck></deck>
+  <div>
+    <p>Dish : {{turn.totalBet}}</p>
+    <card value="card.value" type="card.type" ng-repeat="card in revealed"></card>
+  </div>
+  <div layout="row">
+    <player
+      identifier="player.identifier"
+      name="player.name"
+      fiches="player.fiches"
+      ng-repeat="player in players">
+    </player>
+  </div>
+</div>

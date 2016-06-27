@@ -12,8 +12,8 @@ angular
   .module('fcApp', [
     'ngRoute',
     'ngSanitize',
-    'ngTouch',
-    'ngLodash'
+    'ngLodash',
+    'ngMaterial'
   ])
   .config(function ($routeProvider) {
     $routeProvider

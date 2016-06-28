@@ -8,15 +8,13 @@
  * Factory in the fcApp.
  */
 angular.module('fcApp')
-  .factory('Turn', (lodash, Players) => {
+  .factory('Turn', (lodash, Players, Bets) => {
     let service = {
       missingPlayers: [],
       totalBet: 0,
       maxBet: 0,
       bets: []
     };
-
-    const RAISE = (bet) => bet.raise;
 
     service.get = () => service;
 
@@ -56,6 +54,7 @@ angular.module('fcApp')
 
     service.recordBet = (player) => {
       if(service.allowedToBet(player)) {
+        Bets.logBet(player);
         lodash.remove(service.missingPlayers, Players.equals(player));
         if(!player.fold) {
           service.bets.push(player);

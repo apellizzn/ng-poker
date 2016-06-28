@@ -15,7 +15,7 @@ angular
     'ngLodash',
     'ngMaterial'
   ])
-  .config(function ($routeProvider, $mdThemingProvider) {
+  .config(function ($routeProvider) {
     $routeProvider
       .when('/', {
         templateUrl: 'views/main.html',
@@ -30,6 +30,4 @@ angular
       .otherwise({
         redirectTo: '/'
       });
-
-    $mdThemingProvider.theme('default').dark();
   });

@@ -1,0 +1,22 @@
+<div>
+  <md-toolbar layout="row" class="md-warn md-hue-3">
+    <div class="md-toolbar-tools">
+      <span>Bets</span>
+      <span flex></span>
+      <md-button class="md-raised" aria-label="Clear" ng-click="clear()">
+        Clear
+      </md-button>
+    </div>
+  </md-toolbar>
+  <md-content>
+    <md-list flex>
+      <md-list-item class="md-3-line {{ bet.raise ? 'raise' : 'fold' }}" ng-repeat="bet in bets" ng-click="null">
+        <div class="md-list-item-text" layout="column">
+          <h3>{{ bet.name }}</h3>
+          <p>{{ bet.raise ? 'betted : ' + bet.raise : 'Fold!' }}</p>
+        </div>
+        <md-divider></md-divider>
+      </md-list-item>
+    </md-list>
+  </md-content>
+</div>

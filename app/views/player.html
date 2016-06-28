@@ -1,4 +1,4 @@
-<md-content layout="column" layout-padding>
+<div md-whiteframe="1" layout="column" layout-padding>
   <h2>{{player.name}}</h2>
   <label>Fiches ({{player.fiches}})</label>
   <md-progress-linear md-mode="determinate" value="{{player.fiches}}"></md-progress-linear>
@@ -14,11 +14,9 @@
       </md-slider>
     </md-slider-container>
     <section layout="row" layout-sm="column" layout-align="center center" layout-wrap>
-      <md-button class="md-raised" ng-click="raise()">Raise</md-button>
+      <md-button class="md-raised md-primary" ng-click="raise()">Raise</md-button>
       <md-button class="md-raised md-warn" ng-click="fold()">Fold</md-button>
-      <md-button class="md-raised md-primary">Check</md-button>
+      <md-button class="md-raised">Check</md-button>
     </section>
   </md-content>
-  <div>
-  </div>
-</md-content>
+</div>

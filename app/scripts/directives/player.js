@@ -11,16 +11,14 @@ angular.module('fcApp')
     return {
       templateUrl: 'views/player.html',
       scope: {
-        name: '@',
-        fiches: '@',
-        side: '@',
-        identifier: '@'
+        name: '=',
+        fiches: '=',
+        identifier: '='
       },
       restrict: 'E',
       link: function postLink(scope) {
         scope.amount = 5;
         scope.player = Game.findPlayer(Number(scope.identifier));
-
         scope.raise = () => {
           Game.addBet(lodash.merge(scope.player, { raise: Number(scope.amount) }));
         };

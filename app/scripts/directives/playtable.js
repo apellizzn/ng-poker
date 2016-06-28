@@ -1,5 +1,3 @@
-'use strict';
-
 /**
  * @ngdoc directive
  * @name fcApp.directive:PlayTable
@@ -11,6 +9,7 @@ angular.module('fcApp')
     return {
       templateUrl: 'views/playtable.html',
       restrict: 'E',
+      replace: true,
       link: function postLink(scope) {
         scope.players = [
           {

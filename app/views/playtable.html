@@ -1,15 +1,15 @@
-<div layout="column" class="md-whiteframe-24dp">
-  <deck></deck>
+<md-content layout="column" class="container">
   <div>
-    <p>Dish : {{turn.totalBet}}</p>
     <card value="card.value" type="card.type" ng-repeat="card in revealed"></card>
+    <p>{{turn.totalBet}}</p>
   </div>
   <div layout="row">
     <player
+      flex="50"
       identifier="player.identifier"
       name="player.name"
       fiches="player.fiches"
       ng-repeat="player in players">
     </player>
   </div>
-</div>
+</md-content>

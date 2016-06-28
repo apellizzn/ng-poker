@@ -1,5 +1,7 @@
-<div layout="column" layout-padding>
+<md-content layout="column" layout-padding>
   <h2>{{player.name}}</h2>
+  <label>Fiches ({{player.fiches}})</label>
+  <md-progress-linear md-mode="determinate" value="{{player.fiches}}"></md-progress-linear>
   <div>
     <card value="card.value" type="card.type" ng-repeat="card in player.cards"></card>
   </div>
@@ -10,14 +12,13 @@
       </md-input-container>
       <md-slider ng-model="amount" min="0" max="{{player.fiches}}" aria-label="raise" id="volume-slider" class="md-accent" md-vertical md-range></md-slider>
       </md-slider>
-      <h5>Raise</h5>
     </md-slider-container>
     <section layout="row" layout-sm="column" layout-align="center center" layout-wrap>
-      <md-button class="md-raised">Raise</md-button>
-      <md-button class="md-raised md-warn">Fold</md-button>
+      <md-button class="md-raised" ng-click="raise()">Raise</md-button>
+      <md-button class="md-raised md-warn" ng-click="fold()">Fold</md-button>
       <md-button class="md-raised md-primary">Check</md-button>
     </section>
   </md-content>
   <div>
   </div>
-</div>
+</md-content>
